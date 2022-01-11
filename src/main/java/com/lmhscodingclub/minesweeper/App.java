@@ -3,10 +3,8 @@ package com.lmhscodingclub.minesweeper;
 /**
  * Hello world!
  */
-public final class App {
-    private App() {
-    }
-
+public class App {
+    
     /**
      * Says hello to the world.
      * @param args The arguments of the program.
