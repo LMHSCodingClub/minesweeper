@@ -23,16 +23,19 @@ public class MinesweeperBoard {
             int x;
             int y;
             do {
-                x = (int) Math.random() * (boardSpaces.length);
-                y = (int) Math.random() * (boardSpaces[0].length);
+                x = (int)(Math.random() * (boardSpaces.length));
+                y = (int)(Math.random() * (boardSpaces[0].length));
             } while (boardSpaces[x][y] != null);
 
             boardSpaces[x][y] = new BoardSpace(-1);
         }
 
-        int adjacentMineCount = 0;
         for (int i = 0; i < boardSpaces.length; i++) {
             for (int j = 0; j < boardSpaces[i].length; j++) {
+                if (boardSpaces[i][j] != null)
+                    continue;
+
+                int adjacentMineCount = 0;
                 if (spaceHasMine(i - 1, j - 1))
                     adjacentMineCount++;
                 if (spaceHasMine(i - 1, j))
@@ -49,6 +52,8 @@ public class MinesweeperBoard {
                     adjacentMineCount++;
                 if (spaceHasMine(i + 1, j + 1))
                     adjacentMineCount++;
+
+                boardSpaces[i][j] = new BoardSpace(adjacentMineCount);
             }
         }
     }
@@ -79,6 +84,12 @@ public class MinesweeperBoard {
         else if (y < 0 || y >= boardSpaces[x].length)
             return false;
 
-        return boardSpaces[x][y].isMine();
+        BoardSpace space = boardSpaces[x][y];
+        if (space == null)
+            // We haven't populated this slot in the array yet
+            // So, let's assume this isn't a mine
+            return false;
+
+        return space.isMine();
     }
 }
